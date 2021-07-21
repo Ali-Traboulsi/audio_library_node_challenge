@@ -21,6 +21,54 @@ exports.addCategory = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
+exports.getCategories = (req, res, next) => {
+    Category
+        .find()
+        .sort('-created_at')
+        .then(result => {
+            console.log(result)
+            return res.status(201).json({
+                message: "Successfully Retrieved Categories!",
+                categories: result
+            })
+        })
+        .catch(err => console.log(err));
+}
+
+exports.updateCategory = (req, res, next) => {
+    const categoryId = req.params.categoryId;
+    const updatedName = req.body.name;
+    const updatedDescription = req.body.description;
+    Category
+        .findById(categoryId)
+        .then(category => {
+            category.name = updatedName;
+            category.description = updatedDescription;
+            return category.save();
+        })
+        .then(result => {
+            console.log(result);
+            return res.status(201).json({
+                message: "Successfully Updated Category!",
+                category: result
+            })
+        })
+        .catch(err => console.log(err));
+}
+
+exports.deleteCategory = (req, res, next) => {
+    const categoryId = req.params.categoryId;
+    Category
+        .findByIdAndRemove(categoryId)
+        .then(result => {
+            console.log(res);
+            return res.status(201).json({
+                message: "Successfully Destroyed Category!"
+            })
+        })
+        .catch(err => console.log(err));
+}
+
 exports.addAlbum = (req, res, next) => {
     const name = req.body.name;
     const description = req.body.description;
@@ -146,3 +194,5 @@ exports.getAlbum = (req, res, next) => {
         })
         .catch(err => console.log(err));
 }
+
+
