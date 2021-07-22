@@ -287,7 +287,7 @@ exports.updateTrack = (req, res, next) => {
 exports.deleteTrack = (req, res, next) => {
     const trackId = req.params.trackId;
     Track
-        .findById(trackId)
+        .findByIdAndRemove(trackId)
         .then(track => {
             Album
                 .findById(track.albumId)
@@ -303,9 +303,9 @@ exports.deleteTrack = (req, res, next) => {
                 .catch(err => console.log(err));
             return track;
         })
-        .then(track => {
-            return track.findByIdAndRemove(trackId)
-        })
+        // .then(() => {
+        //     return Track.findByIdAndRemove(trackId)
+        // })
         .then(() => {
           return res.status(201).json({
               message: "Successfully deleted Track!"
