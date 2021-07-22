@@ -173,6 +173,13 @@ exports.deleteAlbum = (req, res, next) => {
     Album
         .findByIdAndRemove(albumId)
         .then(result => {
+            Track
+                .deleteMany({albumId: albumId})
+                .then(() => console.log("Deleted All Related Tracks"))
+                .catch(err => console.log(err));
+            return result;
+        })
+        .then(() => {
             console.log('DESTROYED ALBUM!')
             return res.status(201).json({
                 message: "Successfully Deleted Album!",
@@ -195,4 +202,55 @@ exports.getAlbum = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
+
+exports.updateTrack = (req, res, next) => {
+    const trackId = req.params.trackId;
+    Track
+        .findById(trackId)
+        .then(track => {
+            const updatedName = req.body.name;
+            const updatedSinger = req.body.singer;
+            const updatedAlbumId = req.body.albumId;
+            const updatedCategoryId = req.body.categoryId;
+
+            if (track.albumId !== updatedAlbumId) {
+                Album
+                    .findById(track.albumId)
+                    .then(album => {
+                        album.nbOfTracks -= 1;
+                       return album.save()
+                    })
+                    .then(result => console.log(result))
+                    .catch(err => console.log(err));
+            }
+
+            track.name = updatedName;
+            track.singer = updatedSinger;
+            track.albumId = updatedAlbumId;
+            track.categoryId = updatedCategoryId;
+
+            return track.save()
+        })
+        .then(result => {
+            console.log(result);
+            Album
+                .findById(result.albumId)
+                .then(album => {
+                    album.nbOfTracks += 1
+                    return album.save()
+                })
+                .then(result => {
+                    console.log(result)
+                })
+                .catch(err => console.log(err));
+            return result;
+        })
+        .then(result => {
+            res.status(201).json({
+                message: "Successfully Updated Track",
+                track: result
+            });
+        })
+        .catch(err => console.log(err));
+}
 
