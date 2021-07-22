@@ -37,8 +37,11 @@ router.delete('/delete-album/:albumId', adminController.deleteAlbum);
 // /admin/get-album/:albumId => GET --- for fetching a single album
 router.get('/get-album/:albumId', adminController.getAlbum);
 
-// /admin/updated-track/:trackId => PUT --- for updating a single track
+// /admin/update-track/:trackId => PUT --- for updating a single track
 router.put('/update-track/:trackId', adminController.updateTrack);
+
+// /admin/delete-track/:trackId => DELETE --- for deleting a single track
+router.delete('/delete-track/:trackId', adminController.deleteTrack);
 
 
 module.exports = router;
