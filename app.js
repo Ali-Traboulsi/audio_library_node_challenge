@@ -5,6 +5,7 @@ const path = require('path');
 const express = require('express')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // import relative dependencies
 const ErrorController = require('./controllers/error');
@@ -14,12 +15,12 @@ const adminRoutes = require('./routes/admin');
 // initialize the express object in order to access all methods and props defined by express
 const app = express();
 
-
+app.use(cors());
 // parse the incoming request through a middleware
 app.use(bodyParser.urlencoded({extended: false}));
 
 // serve the public directory statically by express so it becomes accessible by public users
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // register route middleware to be excuted when a request is to be handled
 app.use('/admin', adminRoutes);

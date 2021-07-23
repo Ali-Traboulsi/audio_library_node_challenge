@@ -16,11 +16,15 @@ const AlbumSchema = new Schema({
         required: true,
         default: 0
     },
+    imageUrl: {
+      type: String,
+    },
     showNbTracks: {
         type: Boolean,
         required: true,
         default: true
-    }
+    },
+    __v: {type: Number, select: false},
 }, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 module.exports = mongoose.model('Album', AlbumSchema);

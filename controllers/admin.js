@@ -72,9 +72,12 @@ exports.deleteCategory = (req, res, next) => {
 exports.addAlbum = (req, res, next) => {
     const name = req.body.name;
     const description = req.body.description;
+    const imageUrl = req.body.imageUrl;
+
     const album = new Album({
         name: name,
-        description: description
+        description: description,
+        imageUrl: imageUrl
     });
     return album
         .save()
@@ -165,10 +168,7 @@ exports.getAlbums = (req, res, next) => {
         .sort('-created_at')
         .then(result => {
             console.log(result)
-            return res.status(201).json({
-                message: "Success Retrieving Albums",
-                albums: result
-            })
+            return res.send(result).status(200);
         })
         .catch(err => console.log(err));
 }
