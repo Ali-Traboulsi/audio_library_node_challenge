@@ -20,7 +20,8 @@ const TrackSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Album',
         required: true
-    }
+    },
+    __v: {type: Number, select: false},
 });
 
 module.exports = mongoose.model('Track', TrackSchema);

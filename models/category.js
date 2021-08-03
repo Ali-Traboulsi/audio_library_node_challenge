@@ -11,6 +11,7 @@ const CategorySchema = new Schema({
         type: String,
         required: true
     },
+    __v: {type: Number, select: false},
 }, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 
