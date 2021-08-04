@@ -2,7 +2,7 @@ const Category = require("../models/category");
 const Album = require("../models/album");
 const Track = require("../models/track");
 
-const { handle500Error } = require("./error");
+const { handleError } = require("./error");
 
 exports.addTrack = async (req, res, next) => {
   let categoriesCount, albumCount;
@@ -36,7 +36,49 @@ exports.addTrack = async (req, res, next) => {
       return res.send(result).status(201);
     }
   } catch (err) {
-    handle500Error(err, next);
+    handleError(err, next);
+  }
+};
+
+exports.getTrack = async (req, res, next) => {
+  const trackId = req.params.trackId;
+  try {
+    const track = await Track.findById(trackId);
+    if (!track) {
+      return next(new Error("track not found"));
+    }
+    return res.send(track).status(201);
+  } catch (err) {
+    handleError(err, next);
+  }
+};
+
+exports.getTracks = async (req, res, next) => {
+  try {
+    const tracks = await Track.find().sort("-created_at");
+    if (tracks.length === 0) {
+      return next(new Error("tracks not found"));
+    }
+    return res.send(tracks).status(201);
+  } catch (err) {
+    handleError(err, next);
+  }
+};
+
+exports.getTrackByAlbum = async (req, res, next) => {
+  const categoryId = req.query.category;
+  const albumId = req.params.albumId;
+  try {
+    const tracks = await Track.find({
+      albumId: albumId,
+      categoryId: categoryId,
+    });
+    if (tracks.length === 0) {
+      throw { statusCode: 404, message: "No Albums Found!" };
+    }
+    return res.status(200).send(tracks);
+  } catch (err) {
+    handleError(err, next);
   }
 };
 
@@ -55,44 +97,19 @@ exports.updateTrack = async (req, res, next) => {
     await track.save();
     return res.send(track).status(201);
   } catch (err) {
-    handle500Error(err, next);
+    handleError(err, next);
   }
 };
 
 exports.deleteTrack = async (req, res, next) => {
   const trackId = req.params.trackId;
   try {
-    const result = await Track.deleteOne({_id: trackId});
+    const result = await Track.deleteOne({ _id: trackId });
     if (!result) {
       return next(new Error("track not found"));
     }
-    return res.send('Deleted Track!').status(201);
+    return res.send("Deleted Track!").status(201);
   } catch (err) {
-    handle500Error(err, next);
-  }
-};
-
-exports.getTrack = async (req, res, next) => {
-  const trackId = req.params.trackId;
-  try {
-    const track = await Track.findById(trackId);
-    if (track.length === 0) {
-      return next(new Error("track not found"));
-    }
-    return res.send(track).status(201);
-  } catch (err) {
-    handle500Error(err, next);
-  }
-};
-
-exports.getTracks = async (req, res, next) => {
-  try {
-    const tracks = await Track.find().sort('-created_at');
-    if (tracks.length === 0) {
-      return next(new Error("tracks not found"));
-    }
-    return res.send(tracks).status(201);
-  } catch (err) {
-    handle500Error(err, next);
+    handleError(err, next);
   }
 };

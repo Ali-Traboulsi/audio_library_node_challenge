@@ -13,7 +13,6 @@ const AlbumSchema = new Schema({
     },
     nbOfTracks: {
         type: Number,
-        required: true,
         default: 0
     },
     imageUrl: {
@@ -21,8 +20,8 @@ const AlbumSchema = new Schema({
     },
     showNbTracks: {
         type: Boolean,
-        required: true,
-        default: true
+        // required: true,
+        default: false
     },
     __v: {type: Number, select: false},
 }, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});

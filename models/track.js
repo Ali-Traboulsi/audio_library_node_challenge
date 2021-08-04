@@ -21,7 +21,11 @@ const TrackSchema = new Schema({
         ref: 'Album',
         required: true
     },
+    imageUrl: {
+        type: String,
+        // required: true
+    },
     __v: {type: Number, select: false},
-});
+},{timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 module.exports = mongoose.model('Track', TrackSchema);
