@@ -10,7 +10,7 @@ const isAuth = require("../middleware/is-auth");
 router.post("/albums", albumController.addAlbum);
 
 // /admin/get-albums => GET --- for fetching all albums
-router.get("/albums", isAuth, albumController.getAlbums);
+router.get("/albums", albumController.getAlbums);
 
 // /admin/album/:albumId => PUT --- for updating an album
 router.put("/albums/:albumId", albumController.updateAlbum);

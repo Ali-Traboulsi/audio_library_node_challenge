@@ -6,11 +6,12 @@ const mongoose = require("mongoose");
 
 const { handleError } = require("./error");
 const { deleteFile } = require("../helpers/file");
+const Error = require("../utils/error");
 
 exports.addAlbum = async (req, res, next) => {
   try {
     if (!req.file) {
-      throw { statusCode: 422, message: "No image provided" };
+      throw Error(422, "No Image Provided!")
     }
 
     const album = new Album({
@@ -21,7 +22,7 @@ exports.addAlbum = async (req, res, next) => {
 
     const result = await album.save();
     if (!result) {
-      throw { statusCode: 500, message: "Failed to create album" };
+      throw Error(500, "Failed to create album");
     }
     return res.send(result).status(201);
   } catch (err) {
@@ -36,7 +37,7 @@ exports.getAlbum = async (req, res, next) => {
     const album = await Album.findById(albumId);
     if (album.length === 0) {
       // return next(new Error("album not found"));
-      throw { statusCode: 404, message: "album not found" };
+      throw Error(404, "album not found")
     }
     return res.send(album).status(201);
   } catch (err) {
@@ -56,7 +57,7 @@ exports.getAlbums = async (req, res, next) => {
     .limit(perPage);
 
   if (albums.length === 0) {
-    throw { statusCode: 404, message: "Albums not found" };
+    throw Error(404, "album not found")
   }
   return res.send({albums: albums, totalItems}).status(201);
 };
@@ -72,12 +73,12 @@ exports.updateAlbum = async (req, res, next) => {
       imageUrl = req.file.path;
     }
     if (!imageUrl) {
-      throw { statusCode: 422, message: "No File Picked" };
+      throw Error(422, "No File Picked")
     }
 
     const album = await Album.findById(albumId);
-    if (album.length === 0) {
-      throw { statusCode: 500, message: "Album not found" };
+    if (!album) {
+      throw Error(404, "album not found")
     }
 
     if (imageUrl !== album.imageUrl) {
@@ -102,17 +103,13 @@ exports.deleteAlbum = async (req, res, next) => {
   try {
     const track = await Track.find({ albumId: albumId });
     if (track.length > 0) {
-      // return res
-      //   .send({ message: "cannot delete album that has tracks" })
-      //   .status(500);
-      throw { statusCode: 500, message: "cannot delete album that has tracks" };
+      throw Error(500, "cannot delete album that has tracks")
     }
 
     const album = await Album.findById(albumId);
     if (album.length === 0) {
-      throw { statusCode: 404, message: "Album not found" };
+      throw Error(404, "album not found")
     }
-    // if album found, delete the image from the file system
     deleteFile(album.imageUrl);
     await Album.findByIdAndRemove(albumId);
     return res.send("album deleted").status(201);

@@ -7,7 +7,7 @@ const { validationResult } = require("express-validator/check");
 const User = require("../models/user");
 
 const { handleError } = require("./error");
-const { TOKEN_SECRET } = require("../config/constants");
+const { TOKEN_SECRET, SENDER_EMAIL, SENDER_PASS } = require("../config/constants");
 
 // // create tranport
 // const transport = nodemailer.createTransport(
@@ -23,8 +23,8 @@ const { TOKEN_SECRET } = require("../config/constants");
 const transport = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: "alitraboulsi112@gmail.com",
-    pass: "!@#$%^&*()ali",
+    user: SENDER_EMAIL,
+    pass: SENDER_PASS,
   },
 });
 

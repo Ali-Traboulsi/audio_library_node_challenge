@@ -3,13 +3,14 @@ const Album = require("../models/album");
 const Track = require("../models/track");
 
 const { handleError } = require("./error");
+const Error = require("../utils/error");
 
 exports.addTrack = async (req, res, next) => {
   let categoriesCount, albumCount;
   try {
     const AlbumResult = await Album.countDocuments({ _id: req.body.albumId });
     if (!AlbumResult) {
-      return next(new Error("No albums found!"));
+      throw Error(404, "No albums found!");
     }
     albumCount = AlbumResult;
 
@@ -31,7 +32,8 @@ exports.addTrack = async (req, res, next) => {
 
       const result = await track.save();
       if (!result) {
-        return next(new Error("Failed to create track"));
+        // return next(new Error("Failed to create track"));
+        throw { statusCode: 500, message: "Failed to create track" };
       }
       return res.send(result).status(201);
     }
@@ -45,7 +47,7 @@ exports.getTrack = async (req, res, next) => {
   try {
     const track = await Track.findById(trackId);
     if (!track) {
-      return next(new Error("track not found"));
+      throw Error(404, "Track not found");
     }
     return res.send(track).status(201);
   } catch (err) {
@@ -57,7 +59,7 @@ exports.getTracks = async (req, res, next) => {
   try {
     const tracks = await Track.find().sort("-created_at");
     if (tracks.length === 0) {
-      return next(new Error("tracks not found"));
+      throw Error(404, "Tracks not found");
     }
     return res.send(tracks).status(201);
   } catch (err) {
@@ -74,7 +76,7 @@ exports.getTrackByAlbum = async (req, res, next) => {
       categoryId: categoryId,
     });
     if (tracks.length === 0) {
-      throw { statusCode: 404, message: "No Albums Found!" };
+      throw Error(404, "No Tracks Found");
     }
     return res.status(200).send(tracks);
   } catch (err) {
@@ -86,8 +88,8 @@ exports.updateTrack = async (req, res, next) => {
   const trackId = req.params.trackId;
   try {
     const track = await Track.findById(trackId);
-    if (track.length === 0) {
-      return next(new Error("track not found!"));
+    if (!track) {
+      throw Error(404, "track not found!");
     }
     track.name = req.body.name;
     track.singer = req.body.singer;
@@ -106,7 +108,7 @@ exports.deleteTrack = async (req, res, next) => {
   try {
     const result = await Track.deleteOne({ _id: trackId });
     if (!result) {
-      return next(new Error("track not found"));
+      throw Error(404, "track not found!");
     }
     return res.send("Deleted Track!").status(201);
   } catch (err) {
