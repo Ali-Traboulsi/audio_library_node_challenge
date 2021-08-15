@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-const { handleError } = require("../controllers/error");
-const { TOKEN_SECRET } = require("../config/constants");
+const { handleError } = require("../controllers/error.controller");
+const { jwtCredentials } = require("../config");
 
 // verify for the existence and validity of the token
 module.exports = (req, res, next) => {
@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
     }
 
     // decode and verify the token if found
-    const decodedToken = jwt.verify(token, TOKEN_SECRET);
+    const decodedToken = jwt.verify(token, jwtCredentials.secretKey);
     if (!decodedToken) {
       throw { statusCode: 401, message: " Not Authenticated!" };
     }

@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 // import relative dependencies
-const albumController = require("../controllers/album");
-const isAuth = require("../middleware/is-auth");
+const albumController = require("../controllers/album.controller");
+const isAuth = require("../middleware/is-auth.middleware");
 
 // /admin/add-album => POST --- for adding an album
 router.post("/albums", albumController.addAlbum);

@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 // import relative dependencies
-const trackController = require("../controllers/track");
-const isAuth = require("../middleware/is-auth");
+const trackController = require("./track.controller");
+const isAuth = require("../middleware/is-auth.middleware");
 
 // /admin/add-track => POST --- for adding a track and updating the related album track number
 router.post("/tracks", trackController.addTrack);

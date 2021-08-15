@@ -3,7 +3,7 @@ const path = require("path");
 
 exports.deleteFile = (filePath) => {
   filePath = path.join(__dirname, "..", filePath);
-  fs.unlink(filePath, (err) => {
+  fs.unlinkSync(filePath, (err) => {
     if (err) {
       throw new Error(err);
     }

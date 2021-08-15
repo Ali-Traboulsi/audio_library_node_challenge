@@ -15,6 +15,14 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    nbOfAttempts: {
+        type: Number,
+        default: 0,
+    },
+    status: {
+        type: String,
+        default: "active"
+    }
 },{timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
 module.exports = mongoose.model('User', UserSchema);

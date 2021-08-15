@@ -4,9 +4,9 @@ const { body } = require("express-validator/check");
 const router = express.Router();
 
 // import relative dependencies
-const authController = require("../controllers/auth");
-const User = require("../models/user");
-// /signup => POST --- for registering a user
+const authController = require("../controllers/auth.controller");
+const User = require("../models/user.model");
+// /signup => POST --- for registeringcontroller a user
 router.post(
   "/signup",
   [
@@ -37,6 +37,6 @@ router.post(
 );
 
 
-router.post('/signin', authController.signIn);
+router.post('/login', authController.signIn);
 
 module.exports = router;

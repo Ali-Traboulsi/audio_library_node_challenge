@@ -5,7 +5,7 @@ const router = express.Router();
 const { body } = require("express-validator/check");
 
 // import relative dependencies
-const categoryController = require("../controllers/category");
+const categoryController = require("./category.controller");
 
 // /admin/category => POST --- for adding a category
 router.post(
