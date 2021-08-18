@@ -10,10 +10,11 @@ const multer = require("multer");
 
 // import relative dependencies
 const ErrorController = require("./controllers/error.controller");
-const albumRoutes = require("./routes/album.routes");
+const albumRoutes = require("./albums/album.routes");
 const trackRoutes = require("./tracks/track.routes");
 const categoryRoutes = require("./categories/category.routes");
-const authRoutes = require("./routes/auth.routes");
+const authRoutes = require("./users-authentication/auth.routes");
+const userRoutes = require("./users-authentication/user.routes");
 const { server, mongodb } = require("./config");
 
 // initialize the express object in order to access all methods and props defined by express
@@ -76,12 +77,12 @@ app.use(albumRoutes);
 app.use(trackRoutes);
 app.use(categoryRoutes);
 app.use("/auth", authRoutes);
+app.use(userRoutes);
 
 // catch any error in the request
 app.use(ErrorController.get404Error);
 
 app.use((error, req, res, next) => {
-  console.log(error);
   const status = error.statusCode || 500;
   res.status(status).send(error);
 });

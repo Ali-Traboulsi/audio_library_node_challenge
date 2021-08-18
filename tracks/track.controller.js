@@ -62,3 +62,12 @@ exports.deleteTrack = async (req, res, next) => {
     handleError(err, next);
   }
 };
+
+exports.deleteAllTracks = async (req, res, next) => {
+  try {
+    const result = await TrackService.deleteAllTracks();
+    return res.status(200).send(result);
+  } catch (err) {
+    handleError(err, next)
+  }
+}

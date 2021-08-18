@@ -5,23 +5,24 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     name: {
         type: String,
-        required: true,
     },
     email: {
         type: String,
-        required: true,
     },
     password: {
         type: String,
-        required: true,
     },
     nbOfAttempts: {
         type: Number,
-        default: 0,
     },
     status: {
         type: String,
-        default: "active"
+    },
+    resetToken: {
+        type: String
+    },
+    resetTokenExpiry: {
+        type: Date
     }
 },{timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 

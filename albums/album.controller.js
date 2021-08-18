@@ -1,5 +1,5 @@
-const AlbumService = require("../services/album.service");
-const { handleError } = require("./error.controller");
+const AlbumService = require("./album.service");
+const { handleError } = require("../controllers/error.controller");
 
 // adds an album
 exports.addAlbum = async (req, res, next) => {

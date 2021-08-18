@@ -10,6 +10,7 @@ exports.addTrack = async (body) => {
     singer: body.singer,
     albumId: body.albumId,
     categoryId: body.categoryId,
+    imageUrl: body.imageUrl
   });
 
   const result = await track.save();
@@ -107,3 +108,8 @@ exports.getTrackByAlbum = async (category, albumId, perPage, currentPage) => {
 
   return resObject(tracks, "Successfully fetched Track!");
 };
+
+exports.deleteAllTracks = async () => {
+  await Track.deleteMany({});
+  return resObject(undefined, "Successfully Deleted All Track");
+}

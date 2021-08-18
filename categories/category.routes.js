@@ -3,23 +3,16 @@ const express = require("express");
 const router = express.Router();
 
 const { body } = require("express-validator/check");
+const { validate } = require("express-validation")
 
 // import relative dependencies
 const categoryController = require("./category.controller");
+const categoryValidationSettings = require("./category.validation");
 
 // /admin/category => POST --- for adding a category
 router.post(
   "/categories",
-  [
-    body("name")
-      .trim()
-      .isLength({ min: 8 })
-      .withMessage("Title should be at least 5 characters long"),
-    body("description")
-      .trim()
-      .isLength({ min: 5 })
-      .withMessage("Description should be at least 5 characters long"),
-  ],
+  validate(categoryValidationSettings),
   categoryController.addCategory
 );
 

@@ -1,4 +1,4 @@
-const Album = require("../models/album.model");
+const Album = require("./album.model");
 const Track = require("../tracks/track.model");
 
 const { deleteFile } = require("../helpers/file");

@@ -1,13 +1,15 @@
 const express = require("express");
+const { validate } = require("express-validation");
 
 const router = express.Router();
 
 // import relative dependencies
-const albumController = require("../controllers/album.controller");
+const albumController = require("./album.controller");
 const isAuth = require("../middleware/is-auth.middleware");
+const AlbumValidationSetting = require("./album.validation");
 
 // /admin/add-album => POST --- for adding an album
-router.post("/albums", albumController.addAlbum);
+router.post("/albums", validate(AlbumValidationSetting) , albumController.addAlbum);
 
 // /admin/get-albums => GET --- for fetching all albums
 router.get("/albums", albumController.getAlbums);

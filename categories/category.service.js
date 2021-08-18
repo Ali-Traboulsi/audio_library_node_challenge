@@ -6,7 +6,6 @@ const resObject = require("../utils/response");
 const io = require("../socket");
 
 exports.addCategory = async (body) => {
-
   const category = new Category({
     name: body.name,
     description: body.description,
@@ -56,13 +55,13 @@ exports.updateCategory = async (categoryId, body) => {
     { omitUndefined: true }
   );
 
-  return resObject(undefined, "Successfully Updated Category!")
+  return resObject(undefined, "Successfully Updated Category!");
 };
 
 exports.deleteCategory = async (categoryId) => {
-  const result = await Category.deleteOne({_id: categoryId});
+  const result = await Category.deleteOne({ _id: categoryId });
   if (!result) {
     throw Error(404, "Category Not Found");
   }
-  return resObject(undefined, "Successfully Deleted Category!")
+  return resObject(undefined, "Successfully Deleted Category!");
 };

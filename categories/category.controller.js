@@ -1,15 +1,9 @@
 const CategoryService = require("./category.service");
 const { handleError } = require("../controllers/error.controller");
-const { validationResult } = require("express-validator/check");
+const {errors} = require("express-validation")
 
 exports.addCategory = async (req, res, next) => {
   try {
-    // store any errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const error = { errors: errors.array(), statusCode: 422 };
-      throw error;
-    }
     // call the service
     const result = await CategoryService.addCategory(req.body);
     // return the response object
